@@ -1,11 +1,19 @@
 const express = require('express')
-const routes = express.Router();
+const multer = require('multer')
+const uploadConfig= require('./config/upload')
+
 const SessionController = require('./controllers/SessionController')
+const SpotController = require('./controllers/SpotController')
 
-//req.query = acessar query params (para filtros)
-//req.params = acessar route params (edição, delete)
-//req.body = acessar body da requisição
+const routes = express.Router();
+const upload = multer(uploadConfig);
 
+//ROUTES
+
+//SESSIONS
 routes.post('/sessions', SessionController.store );
+
+//SPOTS
+routes.post('/spots', upload.single('thumbnail'), SpotController.store ); //upload.single() para uma única imagem
 
 module.exports = routes;
